@@ -25,7 +25,7 @@ type=[int|char|bool]
 //Operadores
 OpeR = [=|=/=|:=|:<|:>|<=|>=]
 OpeA = [+|-|*|/|%]
-OpeL = [~|"||"]
+OpeL = [~]|"||"
 Bool=[true|false|0|1]
 
 
@@ -49,7 +49,7 @@ id = {letra}+({numero}*|{charEsp}*)*
 valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{numero}+{puntoC}
 valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{letra}+{puntoC}
 valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{Bool}+{puntoC}
-valorArray = {var}{espacio}+{id}{espacio}*(=){espacio}*(new Array){espacio}*([1]|[2]){type}
+valorArray = {var}{espacio}+{id}{espacio}*(=){espacio}*(new Array){espacio}*{type}
 
 //bloques de decision
 bIf = {if}{espacio}*{parentesisA}{espacio}* {id}{OpeR}{id} {espacio}*{parentesisC} {espacio}* {abrirC}{espacio}* {expresion}{cerrarC}
@@ -60,3 +60,6 @@ bIf = {elseif}{espacio}*{parentesisA}{espacio}* {id}{OpeR}{id} {espacio}*{parent
 bfor={parentesisA}{espacio}*{id}{espacio}*(in){espacio}*{numero}(..){numero}
 
 %%
+<YYINITIAL>{
+
+}
