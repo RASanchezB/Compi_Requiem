@@ -21,14 +21,13 @@ parentesisA = [(]
 parentesisC = [)]
 abrirC = [<]
 cerrarC = [>]
-type=[int|char|bool]
+type=[[int]|[char]|[bool]]
 //Operadores
 OpeR = [=|=/=|:=|:<|:>|<=|>=]
 OpeA = [+|-|*|/|%]
 OpeL = [~|"||"]
 Bool=[true|false|0|1]
 
-expresion = 
 
 //palabras reservadas
 var = "var"
@@ -50,7 +49,7 @@ id = {letra}+({numero}*|{charEsp}*)*
 valorInt = {var}{espacio}+{id}{espacio}*[=]{espacio}*{numero}+{puntoC}
 valorInt = {var}{espacio}+{id}{espacio}*[=]{espacio}*{letra}+{puntoC}
 valorInt = {var}{espacio}+{id}{espacio}*[=]{espacio}*{Bool}+{puntoC}
-valorArray = {var}{espacio}+{id}{espacio}*[=]{espacio}*[new Array]{espacio}*([1]|[2])[{type}]
+valorArray = {var}{espacio}+{id}{espacio}*[=]{espacio}*[new Array]{espacio}*([1]|[2]){type}
 
 //bloques de decision
 bIf = {if}{espacio}*{parentesisA}{espacio}* {id}{OpeR}{id} {espacio}*{parentesisC} {espacio}* {abrirC}{espacio}* {expresion}{cerrarC}
