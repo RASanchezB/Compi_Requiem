@@ -1,7 +1,7 @@
 %%
 
 %unicode
-%class poyecto
+%class proyecto
 %int
 %line
 %column
@@ -49,7 +49,7 @@ id = {letra}+({numero}*|{charEsp}*)*
 valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{numero}+{puntoC}
 valorChar = {var}{espacio}+{id}{espacio}*(=){espacio}*{letra}+{puntoC}
 valorBool = {var}{espacio}+{id}{espacio}*(=){espacio}*{Bool}+{puntoC}
-valorArray = {var}{espacio}+{id}{espacio}*(=){espacio}*(new Array){arrayCant}{espacio}*{type}
+valorArray = {var}{espacio}+{id}{espacio}*(=){espacio}*(newArray){arrayCant}{espacio}*{type}
 expresion = {valorInt}|{valorChar}|{valorBool}
 
 //bloques de decision
@@ -61,3 +61,6 @@ bE = {else}{espacio}*{abrirC}{espacio}*{expresion}{espacio}*{cerrarC}
 bfor={parentesisA}{espacio}*{id}{espacio}*(in){espacio}*{numero}(..){numero}
 
 %%
+<YYINITIAL>{
+    {bfor}  {System.out.println("");}
+}
