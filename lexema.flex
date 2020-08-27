@@ -62,4 +62,8 @@ bIf = {elseif}{espacio}*{parentesisA}{espacio}* {id}{OpeR}{id} {espacio}*{parent
 //bloques de iteracion
 bfor={parentesisA}{espacio}*{id}{espacio}*[in]{espacio}*{numero}[..]{numero}
 
+<<<<<<< HEAD
 %%
+=======
+%%
+>>>>>>> dcb590dfbb4d87cb3c464f244580b106fabf2599
