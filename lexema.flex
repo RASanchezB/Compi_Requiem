@@ -24,16 +24,14 @@ cerrarC = [>]
 type=[int|char|bool]
 //Operadores
 OpeR = [=|=/=|:=|:<|:>|<=|>=]
-OpeA = [+|-|*|/|%|^]
+OpeA = [+|-|*|/|%]
 OpeL = [~|"||"]
-Bool=[{true}|{false}|0|1]
+Bool=[true|false|0|1]
 
 expresion = 
 
 //palabras reservadas
 var = "var"
-true = "true"
-false = "false"
 for = "for"
 while = "while"
 if = "if"
@@ -62,8 +60,4 @@ bIf = {elseif}{espacio}*{parentesisA}{espacio}* {id}{OpeR}{id} {espacio}*{parent
 //bloques de iteracion
 bfor={parentesisA}{espacio}*{id}{espacio}*[in]{espacio}*{numero}[..]{numero}
 
-<<<<<<< HEAD
 %%
-=======
-%%
->>>>>>> dcb590dfbb4d87cb3c464f244580b106fabf2599
