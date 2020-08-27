@@ -21,7 +21,7 @@ parentesisA = [(]
 parentesisC = [)]
 abrirC = [<]
 cerrarC = [>]
-type=[[int]|[char]|[bool]]
+type=[int|char|bool]
 //Operadores
 OpeR = [=|=/=|:=|:<|:>|<=|>=]
 OpeA = [+|-|*|/|%]
