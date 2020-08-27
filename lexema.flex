@@ -47,15 +47,15 @@ println = "throwDown"
 //variables
 id = {letra}+({numero}*|{charEsp}*)*
 valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{numero}+{puntoC}
-valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{letra}+{puntoC}
-valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{Bool}+{puntoC}
+valorChar = {var}{espacio}+{id}{espacio}*(=){espacio}*{letra}+{puntoC}
+valorBool = {var}{espacio}+{id}{espacio}*(=){espacio}*{Bool}+{puntoC}
 valorArray = {var}{espacio}+{id}{espacio}*(=){espacio}*(new Array){espacio}*{type}
-expresion = {letra}+
+expresion = {valorInt} || {valorChar} ||{valorBool}
 
 //bloques de decision
-bIf = {if}{espacio}*{parentesisA}{espacio}* {id}{OpeR}{id} {espacio}*{parentesisC} {espacio}* {abrirC}{espacio}* {expresion}{cerrarC}
-bE = {else}{espacio}* {abrirC}{espacio}* {expresion}{cerrarC}
-bIf = {elseif}{espacio}*{parentesisA}{espacio}* {id}{OpeR}{id} {espacio}*{parentesisC} {espacio}* {abrirC}{espacio}* {expresion}{cerrarC}
+bIf = {if}{espacio}*{parentesisA}{espacio}* {id}{OpeR}{id} {espacio}*{parentesisC} {espacio}* {abrirC}{espacio}* {expresion}+{cerrarC}
+beIf = {elseif}{espacio}*{parentesisA}{espacio}* {id}{OpeR}{id} {espacio}*{parentesisC} {espacio}* {abrirC}{espacio}* {expresion}{cerrarC}
+bE = {else}{espacio}* {abrirC}{espacio}* {expresion} {espacio}*{cerrarC}
 
 //bloques de iteracion
 bfor={parentesisA}{espacio}*{id}{espacio}*(in){espacio}*{numero}(..){arrayCant}{numero}
