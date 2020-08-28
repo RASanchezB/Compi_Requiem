@@ -13,8 +13,8 @@
 
 //Caracteres especiales
 numero = [0-9]
-letra = [a-zA-Z]
-charEsp= [-_]
+letra = [a-zA-Z]|"_"
+
 espacio = [ \n\r\t]+
 puntoC = [;]
 parentesisA = [(]
@@ -27,7 +27,8 @@ arrayCant= ["1"]|["2"]
 OpeR = [=|=/=|:=|:<|:>|<=|>=]
 OpeA = [+|-|*|/|%]
 OpeL = [~]|"||"
-Bool=[true|false|0|1]
+Bool=true|false
+charEsp= "^"|@|"$"|#|&|"'"|"?"|"!"|{abrirC}|{cerrarC}|"{"|"}"
 
 //palabras reservadas
 var = "var"
@@ -46,7 +47,9 @@ println = "throwDown"
 
 //variables
 id = {letra}+({numero}*|{charEsp}*)*
-valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{numero}+{puntoC}
+valorChar = '({letra}|{numero}|{charEsp}|" ")'
+valorStr='({letra}|{numero}|{charEsp}|" ")+'
+/*valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{numero}+{puntoC}
 valorChar = {var}{espacio}+{id}{espacio}*(=){espacio}*{letra}+{puntoC}
 valorBool = {var}{espacio}+{id}{espacio}*(=){espacio}*{Bool}+{puntoC}
 valorArray = {var}{espacio}+{id}{espacio}*(=){espacio}*(newArray){arrayCant}{espacio}*{type}
@@ -56,11 +59,9 @@ expresion = {valorInt}|{valorChar}|{valorBool}
 bIf = {if}{espacio}*{parentesisA}{espacio}*{id}{OpeR}{id}{espacio}*{parentesisC}{espacio}*{abrirC}{espacio}*{expresion}+{cerrarC}
 beIf = {elseif}{espacio}*{parentesisA}{espacio}*{id}{OpeR}{id}{espacio}*{parentesisC}{espacio}*{abrirC}{espacio}*{expresion}{cerrarC}
 bE = {else}{espacio}*{abrirC}{espacio}*{expresion}{espacio}*{cerrarC}
-
-//bloques de iteracion
-bfor={parentesisA}{espacio}*{id}{espacio}*(in){espacio}*{numero}(..){numero}
+*/
 
 %%
 <YYINITIAL>{
-    {bfor}  {System.out.println("");}
+    {id}  {System.out.println("");}
 }
