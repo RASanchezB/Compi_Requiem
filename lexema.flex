@@ -9,6 +9,7 @@
 
 %{
     String str = "";
+    static int errores=0;
 %}
 
 //Caracteres especiales
@@ -39,7 +40,8 @@ elseif = "eif"
 else = "e"
 switch = "block"
 end = "end"
-
+new = "new"
+Array = "Array"
 //comandos
 scan = "catch"
 print = "throw"
@@ -49,19 +51,40 @@ println = "throwDown"
 id = {letra}+({numero}*|{charEsp}*)*
 valorChar = '({letra}|{numero}|{charEsp}|" ")'
 valorStr='({letra}|{numero}|{charEsp}|" ")+'
-/*valorInt = {var}{espacio}+{id}{espacio}*(=){espacio}*{numero}+{puntoC}
-valorChar = {var}{espacio}+{id}{espacio}*(=){espacio}*{letra}+{puntoC}
-valorBool = {var}{espacio}+{id}{espacio}*(=){espacio}*{Bool}+{puntoC}
-valorArray = {var}{espacio}+{id}{espacio}*(=){espacio}*(newArray){arrayCant}{espacio}*{type}
-expresion = {valorInt}|{valorChar}|{valorBool}
 
-//bloques de decision
-bIf = {if}{espacio}*{parentesisA}{espacio}*{id}{OpeR}{id}{espacio}*{parentesisC}{espacio}*{abrirC}{espacio}*{expresion}+{cerrarC}
-beIf = {elseif}{espacio}*{parentesisA}{espacio}*{id}{OpeR}{id}{espacio}*{parentesisC}{espacio}*{abrirC}{espacio}*{expresion}{cerrarC}
-bE = {else}{espacio}*{abrirC}{espacio}*{expresion}{espacio}*{cerrarC}
-*/
+commentarios="#/"
 
 %%
 <YYINITIAL>{
-    {id}  {System.out.println("");}
+    {id}        {System.out.println("id ");}
+    {valorChar}  {System.out.println("valorChar");}
+    {valorStr}  {System.out.println("valorStr ");}
+    {var}       {System.out.println("var");}
+    {for}       {System.out.println("for");}
+    {while}     {System.out.println("while");}
+    {if}        {System.out.println("if");}
+    {elseif}    {System.out.println("elseif");}
+    {else}      {System.out.println("else");}
+    {switch}    {System.out.println("switch");}
+    {end}       {System.out.println("end");}
+    {scan}      {System.out.println("scan");}
+    {print}     {System.out.println("print");}
+    {println}   {System.out.println("println");}
+    {OpeR}      {System.out.println("OpeRelacional");}
+    {OpeA}      {System.out.println("OpeAritmetico");}
+    {OpeL}      {System.out.println("OpeLogicoa");}
+    {Bool}      {System.out.println("Boolean");}
+    {charEsp}   {System.out.println("caracteres especiales");}
+    {puntoC}    {System.out.println("punto y coma");}
+    {parentesisA}  {System.out.println("parentesis (");}
+    {parentesisC}  {System.out.println("parentesis )");}
+    {abrirC}    {System.out.println("parentesis <");}
+    {cerrarC}   {System.out.println("parentesis >");}
+    {type}      {System.out.println("tipo: "+yytext());}
+    {arrayCant} {System.out.println("cantitdad del arreglo: "+yytext());}
+    {new}       {System.out.println("new" );}
+    {Array}     {System.out.println("=arreglo ");}
+    {espacio}   {}
+    .           {System.out.println("Falla en lexico, char o variable no aceptada: " +yytext()+" Linea: "+(yyline + 1)+ ", Columna: "+(yycolumn+1));
+							errores++;}
 }
