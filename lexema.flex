@@ -1,3 +1,4 @@
+import java_cup_runtime.*;
 %%
 
 %unicode
@@ -6,7 +7,7 @@
 %line
 %column
 %standalone
- 
+%cup
 
 %{
     String str = "";
@@ -56,8 +57,8 @@ bool="bool"
 for = "for"
 while = "while"
 if = "if"
-elseif = "eif"
-else = "e"
+eif = "eif"
+else = "else"
 //blocks
 block = "block"
 end = "end"
@@ -82,70 +83,69 @@ id = {letra}+({numero}*|{letter_special}*)*
 valorChar = '({letra}|{numero}|{letter_special}|" ")'
 valorStr='({letra}|{numero}|{letter_special}|" ")+'
 
-commentarios="#/"
+commentarios_izq="#/"
+commentarios_der="/#"
 
 %%
 <YYINITIAL>{
-    {id}        {System.out.println("id ");}
-    {start}     {System.out.println("start");}
-    {valorChar}  {System.out.println("valorChar");}
-    {func}       {System.out.println("func");}
-    {valorStr}  {System.out.println("valorStr ");}
+    {id}            { return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
+    {start}         { return new Symbol(sym.START,yycolumn,yyline,yytext()); }
+    {valorChar}     { return new Symbol(sym.VALORCHAR,yycolumn,yyline,yytext()); }
+    {func}          { return new Symbol(sym.FUNC,yycolumn,yyline,yytext()); }
+    {valorStr}      { return new Symbol(sym.VALORSTR,yycolumn,yyline,yytext()); }
 
     //types
-    {num}       {System.out.println("num");}
-    {letter}       {System.out.println("letter");}
-    {word}       {System.out.println("word");}
-    {bool}       {System.out.println("bool");}
+    {num}           { return new Symbol(sym.NUM,yycolumn,yyline,yytext()); }
+    {letter}        { return new Symbol(sym.LETTER,yycolumn,yyline,yytext()); }
+    {word}          { return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
+    {bool}          { return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
 
     //ciclos
-    {for}       {System.out.println("for");}
-    {while}     {System.out.println("while");}
+    {for}           { return new Symbol(sym.FOR,yycolumn,yyline,yytext()); }
+    {while}         { return new Symbol(sym.WHILE,yycolumn,yyline,yytext()); }
 
     //decision
-    {if}        {System.out.println("if");}
-    {elseif}    {System.out.println("elseif");}
-    {else}      {System.out.println("else");}
+    {if}            { return new Symbol(sym.IF,yycolumn,yyline,yytext()); }
+    {eif}           { return new Symbol(sym.EIF,yycolumn,yyline,yytext()); }
+    {else}          { return new Symbol(sym.ELSE,yycolumn,yyline,yytext()); }
 
     //block
-    {block}    {System.out.println("block");}
-    {end}       {System.out.println("end");}
+    {block}         { return new Symbol(sym.BLOCK,yycolumn,yyline,yytext()); }
+    {end}           { return new Symbol(sym.END,yycolumn,yyline,yytext()); }
 
     //impresiones
-    {catch}      {System.out.println("catch");}
-    {throw}     {System.out.println("throw");}
-    {throwDown}   {System.out.println("println");}
+    {catch}         { return new Symbol(sym.CATCH,yycolumn,yyline,yytext()); }
+    {throw}         { return new Symbol(sym.THROW,yycolumn,yyline,yytext()); }
+    {throwDown}     { return new Symbol(sym.THROWDOWN,yycolumn,yyline,yytext()); }
 
     //operador relaciona
-    {OpeR}      {System.out.println("OpeRelacional");}
+    {OpeR}          { return new Symbol(sym.OPER,yycolumn,yyline,yytext()); }
 
     //operador aritmeticos
-    {OpeA_sum}      {System.out.println("OpeAritmetico_suma");}
-    {OpeA_mult}      {System.out.println("OpeAritmetico_mult");}
-    {OpeA_mod}      {System.out.println("OpeAritmetico_mod");}
-
+    {OpeA_sum}      { return new Symbol(sym.OPEA_SUM,yycolumn,yyline,yytext()); }
+    {OpeA_mult}     { return new Symbol(sym.OPEA_MULT,yycolumn,yyline,yytext()); }
+    {OpeA_mod}      { return new Symbol(sym.OPEA_MOD,yycolumn,yyline,yytext()); }
     //operador logico
-    {and}      {System.out.println("and");}
-    {or}      {System.out.println("or");}
-    {assignment} {System.out.println("assignment");}
-    {equals} {System.out.println("equals");}
-    {not} {System.out.println("not");}
+    
+    {assignment}    { return new Symbol(sym.ASSIGNMENT,yycolumn,yyline,yytext()); }
+    {equals}        { return new Symbol(sym.EQUALS,yycolumn,yyline,yytext()); }
+    {not}           { return new Symbol(sym.NOT,yycolumn,yyline,yytext()); }
     
     //letrasfinales
     
-    {letter_special}   {System.out.println("letter_special");}
-    {puntoC}    {System.out.println("punto y coma");}
-    {parentesisA}  {System.out.println("parentesis (");}
-    {parentesisC}  {System.out.println("parentesis )");}
-    {abrirC}    {System.out.println("parentesis <");}
-    {cerrarC}   {System.out.println("parentesis >");}
-    {comma}    {System.out.println("coma");}
-    {bracketA} {System.out.println("bracket abierto");}
-    {bracketC} {System.out.println("bracket cerrado");}
-    {punto} {System.out.println("punto");}
-    //{new}       {System.out.println("new" );}
-    {array}     {System.out.println("=arreglo ");}
-    {espacio}   {}
-    .           {System.out.println("Falla en lexico, char o variable no aceptada: " +yytext()+" Linea: "+(yyline + 1)+ ", Columna: "+(yycolumn+1));
+    //{letter_special}   { return new Symbol(sym.LETTER_SPECIAL,yycolumn,yyline,yytext()); }
+    {puntoC}        { return new Symbol(sym.PUNTOC,yycolumn,yyline,yytext()); }
+    {parentesisA}   { return new Symbol(sym.PARENTESISA,yycolumn,yyline,yytext()); }
+    {parentesisC}   { return new Symbol(sym.PARENTESISC,yycolumn,yyline,yytext()); }
+    {abrirC}        { return new Symbol(sym.ABRIRC,yycolumn,yyline,yytext()); }
+    {cerrarC}       { return new Symbol(sym.CERRARC,yycolumn,yyline,yytext()); }
+    {comma}         { return new Symbol(sym.COMMA,yycolumn,yyline,yytext()); }
+    {bracketA}      { return new Symbol(sym.BRACKETA,yycolumn,yyline,yytext()); }
+    {bracketC}      { return new Symbol(sym.BRACKETC,yycolumn,yyline,yytext()); }
+    {punto}         { return new Symbol(sym.PUNTO,yycolumn,yyline,yytext()); }
+    //{new}         {System.out.println("new" );}
+    {array}         { return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
+    {espacio}       {}
+    .               {System.out.println("Falla en lexico, char o variable no aceptada: " +yytext()+" Linea: "+(yyline + 1)+ ", Columna: "+(yycolumn+1));
 							errores++;}
 }
