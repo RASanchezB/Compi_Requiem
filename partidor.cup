@@ -25,4 +25,15 @@ parser code
     } 
 :}
 
-terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC
+terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC;
+terminal OPER, OPEA_SUM, OPEA_MULT, OPEA_MOD, BOOL, ARRAY, FOR, WHILE, IF, EIF, ELSE ,BLOCK, END;
+terminal CATCH, THROW, THROWDOWN ,NUM, LETTER, WORD , FUNC, START , ID;
+
+non terminal   type;
+non terminal declara;
+non terminal declara_puntoc;
+
+type::= NUM
+    |   BOOL
+    |   LETTER
+    |   WORD;
