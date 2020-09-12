@@ -86,6 +86,8 @@ valorStr='({letra}|{numero}|{letter_special}|" ")+'
 commentarios_izq="#/"
 commentarios_der="/#"
 
+%state BLOCK_COMMENT
+
 %%
 <YYINITIAL>{
     {id}            { return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
@@ -145,7 +147,14 @@ commentarios_der="/#"
     {punto}         { return new Symbol(sym.PUNTO,yycolumn,yyline,yytext()); }
     //{new}         {System.out.println("new" );}
     {array}         { return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
+
+    {commentarios_izq}  { yybegin(BLOCK_COMMENT); }
     {espacio}       {}
     .               {System.out.println("Falla en lexico, char o variable no aceptada: " +yytext()+" Linea: "+(yyline + 1)+ ", Columna: "+(yycolumn+1));
 							errores++;}
+}
+<BLOCK_COMMENT>
+{
+	{commentarios_der}			{ yybegin(YYINITIAL); }
+	.								{ /* do nothing */ }
 }
