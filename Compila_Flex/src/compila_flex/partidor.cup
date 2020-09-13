@@ -16,14 +16,14 @@ parser code
     } 
 :}
 //lexemas
-terminal String BOOL, NUM, LETTER,NADA;
+terminal String bool, num, letter,NADA;
 terminal String ID;
 
 //palabras reservadas y Operadores
 
 terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA;
 terminal OPER, OPEA_SUM, OPEA_MULT, OPEA_MOD, BOOL, ARRAY, FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
-terminal CATCH, THROW, THROWDOWN ,NUM, LETTER, WORD , FUNC, START ,FLECHA, ID, VAR ,NEW, FUNC, NOT;
+terminal CATCH, THROW, THROWDOWN ,NUM, LETTER, WORD , FUNC, START ,FLECHA,  VAR ,NEW,  NOT;
 terminal IN, PUNTO;
 
 //not terminales
@@ -32,7 +32,9 @@ non terminal ifState;
 non terminal expression;
 non terminal valores;
 non terminal   type;
+non terminal body;
 non terminal parametro;
+non terminal list_id;
 non terminal declara;
 non terminal declara_puntoc;
 non terminal declara_array;
@@ -43,13 +45,19 @@ non terminal eif;
 non terminal proposition;
 non terminal asigna;
 non terminal CicloFor;
-
+non terminal funciones;
+non terminal expression_simple;
+non terminal termino;
+non terminal signo;
+non terminal factor;
+non terminal factor_for;
+non terminal list_expression;
 
 start with Program;
 
 Program ::= START FLECHA BRACKETA body BRACKETC;
 
-declara ::= VAR type    list_id  PUNTOC;
+declara ::= VAR type  list_id  PUNTOC;
 
 declara_simple::= VAR type  ID  declara_puntoc;
 
@@ -74,15 +82,16 @@ type::= NUM
 declara_puntoc::=PUNTOC
     |   asigna;
 
-asigna::= ASSIGNMENT valores PUNTOC;
+asigna::= ASSIGNMENT valores PUNTOC
     |   ASSIGNMENT NADA PUNTOC;
 
 
-declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA ID PARENTESISC BRACKETA type BRACKETC
+declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA ID PARENTESISC BRACKETA type BRACKETC;
 
-valores::= BOOL 
-    |   NUM
-    |   LETTER;
+//añadir mas tarde el string
+valores::= bool 
+    |   num
+    |   letter;
 
 ifState::= ifEmparejado | ifNEmparejado;
 
@@ -113,6 +122,6 @@ factor_for ::= ID
 	| NUM
 	| signo NUM;
 
-signo ::= OPSUM;
+signo ::= OPEA_SUM;
 
 list_expression::= expression | list_expression COMMA expression;
