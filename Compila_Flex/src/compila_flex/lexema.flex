@@ -65,6 +65,7 @@ eif = "eif"
 else = "else"
 //blocks
 block = "block"
+case = "case"
 end = "end"
 new = "new"
 
@@ -76,10 +77,11 @@ array = "array"
 catch = "catch"
 throw = "throw"
 throwDown = "throwDown"
+default = "default"
 
 //funcion
 func="func"
-
+reply="reply"
 //identificador
 id = {letra}+({numero}*|{letter_special}*)*
 
@@ -99,6 +101,7 @@ commentarios_der="/#"
     {flecha}        { return new Symbol(sym.FLECHA,yycolumn,yyline,yytext()); }
     {valorChar}     { return new Symbol(sym.VALORCHAR,yycolumn,yyline,yytext()); }
     {func}          { return new Symbol(sym.FUNC,yycolumn,yyline,yytext()); }
+    {reply}         { return new Symbol(sym.REPLY,yycolumn,yyline,yytext()); }
     {valorStr}      { return new Symbol(sym.VALORSTR,yycolumn,yyline,yytext()); }
 
     //types
@@ -119,8 +122,9 @@ commentarios_der="/#"
 
     //block
     {block}         { return new Symbol(sym.BLOCK,yycolumn,yyline,yytext()); }
+    {case}          { return new Symbol(sym.CASE,yycolumn,yyline,yytext()); }
     {end}           { return new Symbol(sym.END,yycolumn,yyline,yytext()); }
-
+    {default}       { return new Symbol(sym.DEFAULT,yycolumn,yyline,yytext()); }
     //impresiones
     {catch}         { return new Symbol(sym.CATCH,yycolumn,yyline,yytext()); }
     {throw}         { return new Symbol(sym.THROW,yycolumn,yyline,yytext()); }
