@@ -17,7 +17,7 @@ import java_cup_runtime.*;
 //Caracteres especiales
 numero = [0-9]
 letra = [a-zA-Z]|"_"
-
+flecha="->"
 espacio  = [ \n\r\t]+
 comma = ","
 punto="."
@@ -33,6 +33,8 @@ bracketC = "]"
 //Operadores
 assignment = "="
 equals = ":="
+
+//NOT="NOT"
 not = "=/="
 and = "~"
 or="||"
@@ -48,21 +50,23 @@ letter_special= "^"|@|"$"|#|&|"'"|"?"|"!"|{abrirC}|{cerrarC}|"{"|"}"
 start="start"
 
 //palabras reservadas
+var="var"
 num = {numero}+
 letter = "letter"
 word="word"
 bool="bool"
+in="in"
 
 //ciclos
 for = "for"
-while = "while"
+wle = "wle"
 if = "if"
 eif = "eif"
 else = "else"
 //blocks
 block = "block"
 end = "end"
-//new = "new"
+new = "new"
 
 //arreglo
 array = "array"
@@ -92,6 +96,7 @@ commentarios_der="/#"
 <YYINITIAL>{
     {id}            { return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
     {start}         { return new Symbol(sym.START,yycolumn,yyline,yytext()); }
+    {flecha}        { return new Symbol(sym.FLECHA,yycolumn,yyline,yytext()); }
     {valorChar}     { return new Symbol(sym.VALORCHAR,yycolumn,yyline,yytext()); }
     {func}          { return new Symbol(sym.FUNC,yycolumn,yyline,yytext()); }
     {valorStr}      { return new Symbol(sym.VALORSTR,yycolumn,yyline,yytext()); }
@@ -101,11 +106,12 @@ commentarios_der="/#"
     {letter}        { return new Symbol(sym.LETTER,yycolumn,yyline,yytext()); }
     {word}          { return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
     {bool}          { return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
-
+    {var}           { return new Symbol(sym.VAR,yycolumn,yyline,yytext()); }
+    {new}           { return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
     //ciclos
     {for}           { return new Symbol(sym.FOR,yycolumn,yyline,yytext()); }
-    {while}         { return new Symbol(sym.WHILE,yycolumn,yyline,yytext()); }
-
+    {wle}         { return new Symbol(sym.WLE,yycolumn,yyline,yytext()); }
+    {in}            { return new Symbol(sym.IN,yycolumn,yyline,yytext()); }
     //decision
     {if}            { return new Symbol(sym.IF,yycolumn,yyline,yytext()); }
     {eif}           { return new Symbol(sym.EIF,yycolumn,yyline,yytext()); }
@@ -145,7 +151,7 @@ commentarios_der="/#"
     {bracketA}      { return new Symbol(sym.BRACKETA,yycolumn,yyline,yytext()); }
     {bracketC}      { return new Symbol(sym.BRACKETC,yycolumn,yyline,yytext()); }
     {punto}         { return new Symbol(sym.PUNTO,yycolumn,yyline,yytext()); }
-    //{new}         {System.out.println("new" );}
+    {new}           { return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
     {array}         { return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
 
     {commentarios_izq}  { yybegin(BLOCK_COMMENT); }

@@ -4,36 +4,115 @@ import java.util.*;
 
 parser code
 {:
- /**
-     * Método al que se llama automáticamente ante algún error sintactico.
-     **/ 
+
     public void syntax_error(Symbol s){ 
-       // System.out.println("Error Sintáctico en la Línea " + (s.left) +
-       // " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".");
+
        System.out.println("Sintaxis correcta");
     } 
 
-    /**
-     * Método al que se llama automáticamente ante algún error sintáctico 
-     * en el que ya no es posible una recuperación de errores.
-     **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        //System.out.println("Error síntactico irrecuperable en la Línea " + 
-        //(s.left)+ " Columna "+s.right+". Componente " + s.value + 
-        //" no reconocido.");
+
         System.out.println("Sintaxis correcta"); 
     } 
 :}
+//lexemas
+terminal String BOOL, NUM, LETTER,NADA;
+terminal String ID;
 
-terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC;
-terminal OPER, OPEA_SUM, OPEA_MULT, OPEA_MOD, BOOL, ARRAY, FOR, WHILE, IF, EIF, ELSE ,BLOCK, END;
-terminal CATCH, THROW, THROWDOWN ,NUM, LETTER, WORD , FUNC, START , ID;
+//palabras reservadas y Operadores
 
+terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA;
+terminal OPER, OPEA_SUM, OPEA_MULT, OPEA_MOD, BOOL, ARRAY, FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
+terminal CATCH, THROW, THROWDOWN ,NUM, LETTER, WORD , FUNC, START ,FLECHA, ID, VAR ,NEW, FUNC, NOT;
+terminal IN, PUNTO;
+
+//not terminales
+non terminal Program;
+non terminal ifState;
+non terminal expression;
+non terminal valores;
 non terminal   type;
+non terminal parametro;
 non terminal declara;
 non terminal declara_puntoc;
+non terminal declara_array;
+non terminal declara_simple;
+non terminal ifEmparejado;
+non terminal ifNEmparejado;
+non terminal eif;
+non terminal proposition;
+non terminal asigna;
+non terminal CicloFor;
+
+
+start with Program;
+
+Program ::= START FLECHA BRACKETA body BRACKETC;
+
+declara ::= VAR type    list_id  PUNTOC;
+
+declara_simple::= VAR type  ID  declara_puntoc;
+
+funciones::= FUNC type ID PARENTESISA parametro PARENTESISC BRACKETA body BRACKETC;
+
+CicloFor::= FOR PARENTESISA ID IN PUNTO PUNTO ID PARENTESISC FLECHA ABRIRC proposition CERRARC;
+
+
+proposition::= WLE expression FLECHA ABRIRC proposition CERRARC
+    |   CicloFor
+    |   ifState
+    |   ID ASSIGNMENT expression;
+
+list_id::=ID
+    |   list_id COMMA ID;
 
 type::= NUM
     |   BOOL
     |   LETTER
     |   WORD;
+
+declara_puntoc::=PUNTOC
+    |   asigna;
+
+asigna::= ASSIGNMENT valores PUNTOC;
+    |   ASSIGNMENT NADA PUNTOC;
+
+
+declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA ID PARENTESISC BRACKETA type BRACKETC
+
+valores::= BOOL 
+    |   NUM
+    |   LETTER;
+
+ifState::= ifEmparejado | ifNEmparejado;
+
+ifEmparejado::=IF expression ABRIRC proposition CERRARC eif;
+
+ifNEmparejado::=IF expression ABRIRC proposition CERRARC;
+
+eif::=EIF expression ABRIRC proposition CERRARC  eif
+    |   ELSE ABRIRC proposition CERRARC;
+
+expression::= expression_simple
+    |   expression_simple OPER expression_simple;
+
+expression_simple::= termino
+    |   signo termino
+    |   expression_simple OPEA_SUM termino;
+
+termino::= factor
+    |   termino OPEA_MULT factor;
+//tener cuidado con el not
+factor::= ID
+    |   ID PARENTESISA list_expression PARENTESISC
+    |   NUM
+    |   PARENTESISA expression PARENTESISC
+    |   NOT factor;
+
+factor_for ::= ID
+	| NUM
+	| signo NUM;
+
+signo ::= OPSUM;
+
+list_expression::= expression | list_expression COMMA expression;
