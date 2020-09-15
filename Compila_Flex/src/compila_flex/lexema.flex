@@ -41,10 +41,10 @@ or="||"
 OpeR = {not}|{equals}|":<"|":>"|"<="|">=" |{and}|{or}
 OpeA_sum = "+"|-
 OpeA_mult = "*"|"/"
-OpeA_mod = "%"
+MOD = "MOD"
 
 
-letter_special= "^"|@|"$"|#|&|"'"|"?"|"!"|{abrirC}|{cerrarC}|"{"|"}"
+letter_special= "^"|{MOD}|"$"|#|&|"'"|"?"|"!"|{abrirC}|{cerrarC}|"{"|"}"
 
 //inicio
 start="start"
@@ -85,9 +85,9 @@ reply="reply"
 //identificador
 id = {letra}+({numero}*|{letter_special}*)*
 
-
-valorChar = '({letra}|{numero}|{letter_special}|" ")'
-valorStr='({letra}|{numero}|{letter_special}|" ")+'
+valorChar = {letra}
+//valorChar = {letra}|{numero}|{letter_special}|" "
+//valorStr = {letra}|{numero}|{letter_special}|" "
 
 commentarios_izq="#/"
 commentarios_der="/#"
@@ -99,11 +99,9 @@ commentarios_der="/#"
     {id}            { return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
     {start}         { return new Symbol(sym.START,yycolumn,yyline,yytext()); }
     {flecha}        { return new Symbol(sym.FLECHA,yycolumn,yyline,yytext()); }
-    {valorChar}     { return new Symbol(sym.VALORCHAR,yycolumn,yyline,yytext()); }
     {func}          { return new Symbol(sym.FUNC,yycolumn,yyline,yytext()); }
     {reply}         { return new Symbol(sym.REPLY,yycolumn,yyline,yytext()); }
-    {valorStr}      { return new Symbol(sym.VALORSTR,yycolumn,yyline,yytext()); }
-
+    
     //types
     {num}           { return new Symbol(sym.NUM,yycolumn,yyline,yytext()); }
     {letter}        { return new Symbol(sym.LETTER,yycolumn,yyline,yytext()); }
@@ -136,7 +134,7 @@ commentarios_der="/#"
     //operador aritmeticos
     {OpeA_sum}      { return new Symbol(sym.OPEA_SUM,yycolumn,yyline,yytext()); }
     {OpeA_mult}     { return new Symbol(sym.OPEA_MULT,yycolumn,yyline,yytext()); }
-    {OpeA_mod}      { return new Symbol(sym.OPEA_MOD,yycolumn,yyline,yytext()); }
+    {MOD}           { return new Symbol(sym.MOD,yycolumn,yyline,yytext()); }
     //operador logico
     
     {assignment}    { return new Symbol(sym.ASSIGNMENT,yycolumn,yyline,yytext()); }
@@ -157,7 +155,8 @@ commentarios_der="/#"
     {punto}         { return new Symbol(sym.PUNTO,yycolumn,yyline,yytext()); }
     {new}           { return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
     {array}         { return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
-
+    //{valorStr}      { return new Symbol(sym.VALORSTR,yycolumn,yyline,yytext()); }
+    {valorChar}     { return new Symbol(sym.VALORCHAR,yycolumn,yyline,yytext()); }
     {commentarios_izq}  { yybegin(BLOCK_COMMENT); }
     {espacio}       {}
     .               {System.out.println("Falla en lexico, char o variable no aceptada: " +yytext()+" Linea: "+(yyline + 1)+ ", Columna: "+(yycolumn+1));
