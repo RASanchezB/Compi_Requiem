@@ -25,7 +25,7 @@ terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKET
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
 terminal NUM, LETTER, WORD , FUNC, START ,FLECHA,  VAR ,  NOT;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY;
-//terminal ARRAY,NEW,;
+terminal ARRAY,NEW;
 
 //not terminales
 non terminal Program;
@@ -38,7 +38,7 @@ non terminal parametro;
 non terminal list_id;
 non terminal declara;
 non terminal declara_puntoc;
-//non terminal declara_array;
+non terminal declara_array;
 non terminal declara_simple;
 non terminal ifEmparejado;
 non terminal ifNEmparejado;
@@ -96,7 +96,8 @@ asigna::= ASSIGNMENT valores PUNTOC
     |   ASSIGNMENT NADA PUNTOC;
 
 
-//declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA ID PARENTESISC BRACKETA type BRACKETC;
+declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA ID PARENTESISC BRACKETA type BRACKETC
+    |   valores COMMA;
 
 //añadir mas tarde el string
 valores::= bool 

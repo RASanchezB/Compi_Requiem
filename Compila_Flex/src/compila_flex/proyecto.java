@@ -38,9 +38,9 @@ class proyecto implements java_cup.runtime.Scanner {
     "\1\3\1\7\1\20\12\1\1\17\1\10\1\13\1\16\1\4\1\26"+
     "\1\26\3\2\1\2\26\2\1\14\1\0\1\15\1\26\1\2\1\0"+
     "\1\2\1\2\1\2\1\2\1\2\1\2\1\2\1\2\1\2\1\2"+
-    "\1\2\1\2\1\2\1\2\1\2\2\2\1\2\1\2\1\2\1\2"+
-    "\1\2\1\2\1\2\1\2\1\2\1\26\1\22\1\26\1\21\6\0"+
-    "\1\33\u1fa2\0\1\33\1\33\udfd6\0";
+    "\1\2\1\2\1\2\1\2\1\2\1\2\1\2\1\2\1\2\1\2"+
+    "\1\2\1\2\1\2\1\2\1\2\1\2\1\26\1\22\1\26\1\21"+
+    "\6\0\1\33\u1fa2\0\1\33\1\33\udfd6\0";
 
   /** 
    * Translates characters to character classes
@@ -276,7 +276,7 @@ class proyecto implements java_cup.runtime.Scanner {
     char [] map = new char[0x10000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 150) {
+    while (i < 152) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
