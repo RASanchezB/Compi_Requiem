@@ -10,8 +10,8 @@ parser code
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){ 
-       System.out.println("Error Sintáctico en la Línea " + (s.left) +
-        " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".");
+       System.out.println("Error Sintáctico en la Columna " + (s.left) +
+        " linear "+s.right+ ". No se esperaba este componente: " +s.value+".");
        System.out.println("Sintaxis malo malo malo");
     } 
 
@@ -20,23 +20,23 @@ parser code
      * en el que ya no es posible una recuperación de errores.
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        System.out.println("Error síntactico irrecuperable en la Línea " + 
-        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
+        System.out.println("Error síntactico irrecuperable en la columna " + 
+        (s.left)+ " linear "+s.right+". Componente " + s.value + 
         " no reconocido.");
         System.out.println("Sintaxis MAL irrecuperable"); 
     }  
 :}
 //lexemas
-terminal String bool, num, letter,NADA;
-terminal String ID;
+terminal  VERDAD, NUMERITO, LETRA,WORD;
+
 
 //palabras reservadas y Operadores
 
 terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA;
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
-terminal NUM, LETTER, WORD , FUNC, START ,FLECHA,  VAR ,  NOT;
-terminal IN, PUNTO, CASE,DEFAULT, REPLY;
-terminal ARRAY,NEW;
+terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT;
+terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
+//terminal ARRAY,NEW;
 terminal THROW,THROWDOWN,CATCH,VALORCHAR;
 
 //not terminales
@@ -48,9 +48,9 @@ non terminal   type;
 non terminal body;
 non terminal parametro;
 non terminal list_id;
-non terminal declara;
+//non terminal declara;
 non terminal declara_puntoc;
-non terminal declara_array;
+//non terminal declara_array;
 non terminal declara_simple;
 non terminal ifEmparejado;
 non terminal ifNEmparejado;
@@ -68,75 +68,84 @@ non terminal list_expression;
 non terminal block_switch;
 non terminal cases;
 non terminal vacio;
+non terminal print;
+non terminal catch;
 
 start with Program;
 
 Program ::= START FLECHA BRACKETA body BRACKETC;
 
-declara ::= VAR type  list_id  PUNTOC;
+//declara ::= VAR type ID ASSIGNMENT  valores  PUNTOC;
 
-declara_simple::= VAR type  ID  declara_puntoc;
+declara_simple::= VAR type ID declara_puntoc;
 
-funciones::= FUNC type ID PARENTESISA parametro PARENTESISC BRACKETA body REPLY PARENTESISA ID PARENTESISC BRACKETC;
+funciones::= FUNC type ID PARENTESISA parametro PARENTESISC BRACKETA body REPLY PARENTESISA parametro PARENTESISC BRACKETC;
 
-CicloFor::= FOR PARENTESISA ID IN PUNTO PUNTO ID PARENTESISC FLECHA ABRIRC proposition CERRARC;
+CicloFor::= FOR PARENTESISA ID IN NUM PUNTO PUNTO PUNTO NUM PARENTESISC FLECHA ABRIRC body CERRARC;
 
-body::= proposition
-    |   funciones;
+body::= proposition body
+    |   funciones body
+    |   {::};
 
+parametro::= type ID
+    | ID;
 
 proposition::= WLE expression FLECHA ABRIRC proposition CERRARC
+    |   declara_simple
     |   CicloFor
     |   ifState
-    |   ID ASSIGNMENT expression
+    |   ID ASSIGNMENT expression PUNTOC
     |   block_switch
-    |   declara
-    |   declara_simple;
+    |   print
+    |   catch;
 
-list_id::= ID list_id
+print::= THROW PARENTESISA ID PARENTESISC PUNTOC
+    |   THROW PARENTESISA valores PARENTESISC PUNTOC
+    |   THROWDOWN PARENTESISA ID PARENTESISC PUNTOC
+    |   THROWDOWN PARENTESISA valores PARENTESISC PUNTOC;
+    
+catch::= CATCH PARENTESISA ID COMMA ID PARENTESISC PUNTOC;
+/*list_id::= ID list_id
     |   COMMA list_id;
-
-type::= NUM
-    |   BOOL
-    |   LETTER
-    |   WORD;
+*/
+type::= VERDAD
+    | NUMERITO
+    | LETRA
+    | WORD;
 
 declara_puntoc::= PUNTOC
     |   asigna;
 
 asigna::= ASSIGNMENT valores PUNTOC
-    |   ASSIGNMENT NADA PUNTOC;
+    |   ASSIGNMENT ID PUNTOC
+    |   vacio PUNTOC;
 
 
-declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA ID PARENTESISC BRACKETA type BRACKETC
+/*declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA ID PARENTESISC BRACKETA type BRACKETC
     |   valores COMMA;
-
+*/
 //añadir mas tarde el string
-valores::= bool 
-    |   num
-    |   letter;
+valores::= NUM
+    |   BOOL
+    |   LETTER;
 
 //if
-ifState::= ifEmparejado | ifNEmparejado;
 
-ifEmparejado::=IF expression ABRIRC proposition CERRARC eif;
-
-ifNEmparejado::=IF expression ABRIRC proposition CERRARC;
+ifState::= IF PARENTESISA expression PARENTESISC ABRIRC proposition CERRARC eif;
 
 eif::= EIF expression ABRIRC proposition CERRARC eif
     |   ELSE ABRIRC proposition CERRARC
-    |   vacio;
+    |   {::};
 
 //bloque switch
 block_switch::= BLOCK PARENTESISA ID PARENTESISC FLECHA cases END;
 
-cases::= CASE ID ABRIRC proposition CERRARC cases
-    |   CASE num ABRIRC proposition CERRARC cases
-    |   CASE letter ABRIRC proposition CERRARC cases
-    |   DEFAULT ABRIRC proposition CERRARC ;
+cases::= CASE ID ABRIRC body CERRARC cases
+    |   CASE valores ABRIRC body CERRARC cases
+    |   DEFAULT ABRIRC body CERRARC ;
 //expresiones
 expression::= expression_simple
-    |   expression_simple OPER expression_simple;
+    |   expression_simple OPER expression;
 
 expression_simple::= termino
     |   signo termino
@@ -147,7 +156,7 @@ termino::= factor
 //tener cuidado con el not
 factor::= ID
     |   ID PARENTESISA list_expression PARENTESISC
-    |   NUM
+    |   valores
     |   PARENTESISA expression PARENTESISC
     |   NOT factor;
 

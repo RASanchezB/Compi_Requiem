@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package compila_flex;
 
 import java.io.BufferedWriter;
@@ -13,10 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-/**
- *
- * @author Erick C
- */
 public class ejecuta {
     Scanner leer = new Scanner(System.in);
     
@@ -30,34 +22,13 @@ public class ejecuta {
         String ruta = "archivo_texto.txt";
         File archivo = new File(ruta);
         BufferedWriter bw = null;
-        //System.out.println(archivo.exists()+"payasada");
+        
         if (archivo.exists()) {
-            try {
-                bw = new BufferedWriter(new FileWriter(archivo));
-                System.out.print("Escriba el codigo:");
-                String expresion = leer.nextLine();
-                bw.write(expresion);
-            } catch (IOException ex) {
-                System.out.println("" + ex);
-            }
+
+                System.out.print("Reading");
+            
         } else {
-            try {
-                try {
-                    bw = new BufferedWriter(new FileWriter(archivo));
-                } catch (IOException ex) {
-                    System.out.println("" + ex);
-                }
-                System.out.print("Escriba el codigo:");
-                String expresion = leer.nextLine();
-                bw.write(expresion);
-            } catch (IOException ex) {
-                System.out.println("" + ex);
-            }
-        }
-        try {
-            bw.close();
-        } catch (IOException ex) {
-            System.out.println("");
+            System.out.print("nel");
         }
     }
     
