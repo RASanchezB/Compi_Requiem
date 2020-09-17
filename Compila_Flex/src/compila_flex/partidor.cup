@@ -36,8 +36,8 @@ terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKET
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
 terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
-//terminal ARRAY,NEW;
-terminal THROW,THROWDOWN,CATCH,VALORCHAR;
+terminal ARRAY,NEW;
+terminal THROW,THROWDOWN,CATCH;
 
 //not terminales
 non terminal Program;
@@ -47,13 +47,10 @@ non terminal valores;
 non terminal   type;
 non terminal body;
 non terminal parametro;
-non terminal list_id;
 //non terminal declara;
 non terminal declara_puntoc;
-//non terminal declara_array;
+non terminal declara_array;
 non terminal declara_simple;
-non terminal ifEmparejado;
-non terminal ifNEmparejado;
 non terminal eif;
 non terminal proposition;
 non terminal asigna;
@@ -105,9 +102,7 @@ print::= THROW PARENTESISA ID PARENTESISC PUNTOC
     |   THROWDOWN PARENTESISA valores PARENTESISC PUNTOC;
     
 catch::= CATCH PARENTESISA ID COMMA ID PARENTESISC PUNTOC;
-/*list_id::= ID list_id
-    |   COMMA list_id;
-*/
+
 type::= VERDAD
     | NUMERITO
     | LETRA
@@ -120,10 +115,8 @@ asigna::= ASSIGNMENT valores PUNTOC
     |   ASSIGNMENT ID PUNTOC
     |   vacio PUNTOC;
 
+declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA NUM PARENTESISC BRACKETA type BRACKETC;
 
-/*declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA ID PARENTESISC BRACKETA type BRACKETC
-    |   valores COMMA;
-*/
 //añadir mas tarde el string
 valores::= NUM
     |   BOOL
