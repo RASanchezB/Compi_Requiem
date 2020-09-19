@@ -46,24 +46,18 @@ public class Nodo {
         hijo.setPadre(this);
         this.hijos.add(0,hijo);
     }
-    public void print(){
+    /*public String print(Nodo padre ) {
         String pad = "";
-        if(this.padre != null){
-            pad += this.padre.idNodo + "_";
-            pad += this.padre.getValor();
-        }else{
-            pad = "null";
-            limpiar("");
-            escribirArchivo("digraph {\n");
+        String cadena = "";
+        for (Nodo hijo : padre.getHijos()) {
+            if (hijo.valor != null) {
+                cadena += "\"" + padre.getID() + "," + padre.getValor() + "\" -> \"" + hijo.idNodo + "_" + hijo.valor + "\";";
+                cadena += "\n";
+                cadena += print(hijo);
+            }
         }
-        String cadena = "\"" + pad + "\" -> \"" + this.idNodo + "_" + this.valor + "\";";
-        cadena += "\n";
-        escribirArchivo(cadena);
-        for(Nodo hijo: hijos){
-            hijo.print();
-        }
+        return cadena;
     }
-
     public void escribirArchivo(String v){
         FileWriter fichero = null;
         PrintWriter pw = null;
@@ -101,7 +95,7 @@ public class Nodo {
                 
             }
         }
-    }
+    }*/
 
 
 }

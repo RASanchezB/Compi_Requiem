@@ -1,0 +1,6 @@
+digraph {
+"1,Start" -> "2_flecha";
+"1,Start" -> "3_Bracket izquierdo";
+"1,Start" -> "4_Bracket derecho";
+
+}

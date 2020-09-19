@@ -26,11 +26,12 @@ parser code
         " no reconocido.");
         System.out.println("Sintaxis MAL irrecuperable"); 
     }  
+    
 :}
 
 action code 
 {:
-    Nodo arbol=new Nodo();
+    Nodo arbol;
     int token=0;
     int parNum=0;
 :}
@@ -84,17 +85,40 @@ start with Program;
 Program ::= START FLECHA BRACKETA body:b BRACKETC
 {:
     token ++;
-    Nodo node = new Nodo("Start",null,token);
-    node.addHijo(b);
-    node.print();
-    node.escribirArchivo("}");
-    arbol = node;
-    RESULT = node;
+    Nodo start = new Nodo("Start",null,token);
+    token ++;
+    Nodo flecha = new Nodo("flecha",null,token);
+    token ++;
+    Nodo Braca = new Nodo("Bracket izquierdo",null,token);
+    token ++;
+    Nodo Bracc = new Nodo("Bracket derecho",null,token);
+    start.addHijo(flecha);
+    start.addHijo(Braca);
+    start.addHijo(Bracc);
+    //start.addHijo((Nodo)b);
+    //start.print();
+    //start.escribirArchivo("]");
+    parser.arbol = start;
+    //RESULT = node;
 :};
 
 //declara ::= VAR type ID ASSIGNMENT  valores  PUNTOC;
 
-declara_simple::= VAR type ID declara_puntoc;
+declara_simple::= VAR type:t ID:id declara_puntoc:d
+{:
+    //no estoy seguro de como declarar id
+    token++;
+    Nodo decla = new Nodo("Declaracion",null,token);
+    decla.addHijo((Nodo)t);
+    decla.addHijo((Nodo)d);
+    
+    token++;
+    Nodo node = new Nodo("Id",null,token);
+    decla.addHijo(node);
+    RESULT = node;
+
+    
+:};
 
 funciones::= FUNC type ID PARENTESISA parametro PARENTESISC BRACKETA body REPLY PARENTESISA parametro PARENTESISC BRACKETC;
 
@@ -104,16 +128,16 @@ body::= proposition:p body:b
 {:
     token++;
     Nodo node = new Nodo("Body",null,0);
-    node.addHijo(p);
-    node.addHijo(b);
+    node.addHijo((Nodo)p);
+    node.addHijo((Nodo)b);
     RESULT = node;
 :}
     |   funciones:f body:b
 {:
     token++;
     Nodo node = new Nodo("Body",null,0);
-    node.addHijo(b);
-    node.addHijo(f);
+    node.addHijo((Nodo)b);
+    node.addHijo((Nodo)f);
     RESULT = node;
 :}
     |   error body:b
@@ -121,23 +145,23 @@ body::= proposition:p body:b
     token++;
     Nodo node = new Nodo("Body",null,0);
     node.addHijo("Error",token);
-    node.addHijo(b);
+    node.addHijo((Nodo)b);
     RESULT = node;
 :}
-    |   error
-{:
-    token++;
-    Nodo node = new Nodo("Body",null,0);
-    node.addHijo("Error",token);
-    RESULT = node;
-:}
-    |   {::};
+    | {::};
 //parametro
 parametro::= type ID
     | ID;
 //proposciones
 proposition::= WLE expression FLECHA ABRIRC proposition CERRARC
-    |   declara_simple
+    |   declara_simple:d
+{:
+    token++;
+    Nodo node = new Nodo("Proposicion",null,token);
+    node.addHijo("Error",token);
+    node.addHijo((Nodo)d);
+    RESULT = node;
+:}
     |   CicloFor
     |   ifState
     |   ID ASSIGNMENT expression PUNTOC
@@ -155,12 +179,38 @@ catch::= CATCH PARENTESISA ID COMMA ID PARENTESISC PUNTOC;
 
 //tipo
 type::= VERDAD
+{:
+    token++;
+    Nodo node = new Nodo("Verdad", null, token);
+    RESULT = node;
+    
+:}
     | NUMERITO
+{:
+    token++;
+    Nodo node = new Nodo("Numero", null, token);
+    RESULT = node;
+:}
     | LETRA
-    | WORD;
+{:
+    token++;
+    Nodo node = new Nodo("Char", null, token);
+    RESULT = node;
+:}
+    | WORD
+{:
+    token++;
+    Nodo node = new Nodo("String", null, token);
+    RESULT = node;
+:};
 
 //declara puntoC
 declara_puntoc::= PUNTOC
+{:
+    token++;
+    Nodo node = new Nodo(";", null, token);
+    RESULT = node;
+:}
     |   asigna;
 
 //asignacion
