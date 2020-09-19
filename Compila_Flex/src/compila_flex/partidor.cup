@@ -6,6 +6,7 @@ import java.util.*;
 
 parser code
 {:
+    public static Nodo arbol;
          /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
@@ -26,6 +27,15 @@ parser code
         System.out.println("Sintaxis MAL irrecuperable"); 
     }  
 :}
+
+action code 
+{:
+    Nodo arbol=new Nodo();
+    int token=0;
+    int parNum=0;
+:}
+
+
 //lexemas
 terminal  VERDAD, NUMERITO, LETRA,WORD;
 
@@ -44,7 +54,7 @@ non terminal Program;
 non terminal ifState;
 non terminal expression;
 non terminal valores;
-non terminal   type;
+non terminal type;
 non terminal body;
 non terminal parametro;
 //non terminal declara;
@@ -70,7 +80,17 @@ non terminal catch;
 
 start with Program;
 
-Program ::= START FLECHA BRACKETA body BRACKETC;
+//program
+Program ::= START FLECHA BRACKETA body:b BRACKETC
+{:
+    token ++;
+    Nodo node = new Nodo("Start",null,token);
+    node.addHijo(b);
+    node.print();
+    node.escribirArchivo("}");
+    arbol = node;
+    RESULT = node;
+:};
 
 //declara ::= VAR type ID ASSIGNMENT  valores  PUNTOC;
 
@@ -79,14 +99,43 @@ declara_simple::= VAR type ID declara_puntoc;
 funciones::= FUNC type ID PARENTESISA parametro PARENTESISC BRACKETA body REPLY PARENTESISA parametro PARENTESISC BRACKETC;
 
 CicloFor::= FOR PARENTESISA ID IN NUM PUNTO PUNTO PUNTO NUM PARENTESISC FLECHA ABRIRC body CERRARC;
-
-body::= proposition body
-    |   funciones body
+//body
+body::= proposition:p body:b
+{:
+    token++;
+    Nodo node = new Nodo("Body",null,0);
+    node.addHijo(p);
+    node.addHijo(b);
+    RESULT = node;
+:}
+    |   funciones:f body:b
+{:
+    token++;
+    Nodo node = new Nodo("Body",null,0);
+    node.addHijo(b);
+    node.addHijo(f);
+    RESULT = node;
+:}
+    |   error body:b
+{:
+    token++;
+    Nodo node = new Nodo("Body",null,0);
+    node.addHijo("Error",token);
+    node.addHijo(b);
+    RESULT = node;
+:}
+    |   error
+{:
+    token++;
+    Nodo node = new Nodo("Body",null,0);
+    node.addHijo("Error",token);
+    RESULT = node;
+:}
     |   {::};
-
+//parametro
 parametro::= type ID
     | ID;
-
+//proposciones
 proposition::= WLE expression FLECHA ABRIRC proposition CERRARC
     |   declara_simple
     |   CicloFor
@@ -95,29 +144,34 @@ proposition::= WLE expression FLECHA ABRIRC proposition CERRARC
     |   block_switch
     |   print
     |   catch;
-
+//impresiones
 print::= THROW PARENTESISA ID PARENTESISC PUNTOC
     |   THROW PARENTESISA valores PARENTESISC PUNTOC
     |   THROWDOWN PARENTESISA ID PARENTESISC PUNTOC
     |   THROWDOWN PARENTESISA valores PARENTESISC PUNTOC;
-    
+
+//scanner     
 catch::= CATCH PARENTESISA ID COMMA ID PARENTESISC PUNTOC;
 
+//tipo
 type::= VERDAD
     | NUMERITO
     | LETRA
     | WORD;
 
+//declara puntoC
 declara_puntoc::= PUNTOC
     |   asigna;
 
+//asignacion
 asigna::= ASSIGNMENT valores PUNTOC
     |   ASSIGNMENT ID PUNTOC
     |   vacio PUNTOC;
 
+//array
 declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA NUM PARENTESISC BRACKETA type BRACKETC;
 
-//añadir mas tarde el string
+//valores
 valores::= NUM
     |   BOOL
     |   LETTER;

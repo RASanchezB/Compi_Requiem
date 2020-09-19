@@ -1,27 +1,22 @@
-
 package compila_flex;
 
 import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 //nodos de los arboles
 public class Nodo {
-    public String Etiqueta;
-    public ArrayList<Nodo> hijos = new ArrayList<>();
     public String valor;
     public int idNodo;
+    public Nodo padre;
+    public ArrayList<Nodo> hijos = new ArrayList<>();
     
-    public void AñadirHijos(Nodo hijo){
-        hijos.add(hijo);
+    nodo(String valor, Nodo padre, int ref){
+        this.valor = valor;
+        this.padre = padre;
+        this.idNodo = ref
     }
-    
-    public void setEtiqueta(String Etiqueta){
-        this.Etiqueta=Etiqueta;
-    }
-    public String getEtiqueta(){
-        return Etiqueta;
-    }
-    public ArrayList<Nodo> getHijos(){
-        return hijos;
-    }
+    //Getters y setters
     public void setValor(String valor){
         this.valor=valor;
     }
@@ -34,4 +29,79 @@ public class Nodo {
     public int getID(){
         return idNodo;
     }
+    public ArrayList<Nodo> getHijos(){
+        return hijos;
+    }
+    public void setPadre(Nodo p){
+        this.padre = p;
+    }
+    
+    //FUnciones importantes
+    public void addHijo(Nodo hijo){
+        hijos.add(hijo);
+    }public void addHijo(String valor, int ref){
+        hijos.add(new Nodo(valor,null,ref));
+    }
+    public void addHijoAntes(Nodo hijo){
+        hijo.setPadre(this)
+        this.hijos.add(0,hijo);
+    }
+    public void print(){
+        String pad = "";
+        if(this.padre != null){
+            pad += this.padre.id + "_";
+            pad += this.padre.getValor();
+        }else{
+            pad = "null";
+            limpiar("");
+            escribirArchivo("digraph {\n");
+        }
+        String cadena = "\"" + pad + "\" -> \"" + this.id + "_" + this.val + "\";";
+        cadena += "\n"
+        escribirArchivo(cadena);
+        for(Nodo hijo: hijos){
+            hijo.print();
+        }
+    }
+
+    public void escribirArchivo(String v){
+        FileWriter fichero = null;
+        PrinterWriter pw = null;
+        try{
+            fichero = new FileWriter("src/grafico.dot",true);
+            pw = new PrintWriter(fichero);
+            pw.print(v);
+        }catch(Exception e){
+
+        }finally{
+            try{
+                if(null != fichero){
+                    fichero.close();
+                }
+            }catch(Exception e){
+
+            }
+        }
+    }
+    public void limpiar(String v){
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try{
+            fichero = new FileWriter("src/grafico.dot");
+            pw = new PrinterWriter(fichero);
+            pw.print(v);
+        }catch(Exception e){
+
+        }finally{
+            try{
+                if(null!=fichero){
+                    fichero.close();
+                }
+            }catch(Exception e){
+                
+            }
+        }
+    }
+
+
 }
