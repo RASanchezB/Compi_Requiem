@@ -81,49 +81,97 @@ non terminal catch;
 
 start with Program;
 
-//program
+//program------------------------------------------------------------------
 Program ::= START FLECHA BRACKETA body:b BRACKETC
 {:
     token ++;
     Nodo start = new Nodo("Start",null,token);
     token ++;
     Nodo flecha = new Nodo("flecha",null,token);
-    token ++;
-    Nodo Braca = new Nodo("Bracket izquierdo",null,token);
+    // token ++;
+    // Nodo Braca = new Nodo("Bracket izquierdo",null,token);
+    token++;
+    Nodo b = new Nodo("body",null,token);
     token ++;
     Nodo Bracc = new Nodo("Bracket derecho",null,token);
     start.addHijo(flecha);
     start.addHijo(Braca);
+    start.addHijo((Nodo)b)
     start.addHijo(Bracc);
-    //start.addHijo((Nodo)b);
-    //start.print();
-    //start.escribirArchivo("]");
     parser.arbol = start;
-    //RESULT = node;
+    // RESULT = b;
 :};
 
 //declara ::= VAR type ID ASSIGNMENT  valores  PUNTOC;
 
+//Declaracion------------------------------------------------------------------
 declara_simple::= VAR type:t ID:id declara_puntoc:d
 {:
     //no estoy seguro de como declarar id
     token++;
     Nodo decla = new Nodo("Declaracion",null,token);
-    decla.addHijo((Nodo)t);
-    decla.addHijo((Nodo)d);
-    
     token++;
-    Nodo node = new Nodo("Id",null,token);
-    decla.addHijo(node);
-    RESULT = node;
+    Nodo var = new Nodo("VAR",null,token);
+    decla.addHijo(var);
+    decla.addHijo((Nodo)t);
+    token++;
+    Nodo i = new Nodo("ID",null,token);
+    decla.addHijo(i)
+    decla.addHijo((Nodo)d);
+    token++;
+    // Nodo node = new Nodo("Id",null,token);
+    // decla.addHijo(node);
+    // RESULT = node;
 
     
 :};
+//Funcion------------------------------------------------------------------
+funciones::= FUNC type:tipo ID PARENTESISA parametro:par PARENTESISC BRACKETA body:bod REPLY PARENTESISA parametro:para PARENTESISC BRACKETC
+{:
+    token++;
+    Nodo f = new Nodo("Funcion",null,token);
+    token++;
+    Nodo t = new Nodo("tipo",null,token);
+    f.addHijo(t);
+    token++;
+    Nodo i = new Nodo("ID",null,token);
+    f.addHijo(i);
+    token++;
+    Nodo parenA = new Nodo("ParentesisA",null,token); 
+    f.addHijo(parenA);
+    
+    f.addHijo((Nodo)par);
 
-funciones::= FUNC type ID PARENTESISA parametro PARENTESISC BRACKETA body REPLY PARENTESISA parametro PARENTESISC BRACKETC;
+    token++;
+    Nodo parenC = new Nodo("ParentesisC",null,token);
+    f.addHijo(parenC);
+    token++;
+    Nodo brackA = new Nodo("BracketA",null,token);
+    f.addHijo(brackA);
+    token++;
+    f.addHijo(bod);
+    token++;
+    Nodo rep = new Nodo("Reply",null,token); 
+    f.addHijo(rep);
+    token++;
+    Nodo parenA2 = new Nodo("ParentesisA",null,token); 
+    f.addHijo(parenA2);
+    
+    f.addHijo((Nodo)para);
 
-CicloFor::= FOR PARENTESISA ID IN NUM PUNTO PUNTO PUNTO NUM PARENTESISC FLECHA ABRIRC body CERRARC;
-//body
+    token++;
+    Nodo parenC2 = new Nodo("ParentesisC",null,token);
+    f.addHijo(parenC2);
+    token++;
+    Nodo brackC = new Nodo("BracketC",null,token);
+    f.addHijo(brackC);
+:};
+//For------------------------------------------------------------------
+CicloFor::= FOR PARENTESISA ID IN NUM PUNTO PUNTO PUNTO NUM PARENTESISC FLECHA ABRIRC body CERRARC
+{:
+
+:};
+//body------------------------------------------------------------------
 body::= proposition:p body:b
 {:
     token++;
@@ -149,11 +197,15 @@ body::= proposition:p body:b
     RESULT = node;
 :}
     | {::};
-//parametro
+//parametro------------------------------------------------------------------
 parametro::= type ID
     | ID;
-//proposciones
-proposition::= WLE expression FLECHA ABRIRC proposition CERRARC
+//proposciones------------------------------------------------------------------
+proposition::= WLE expression:ex FLECHA ABRIRC proposition CERRARC
+{:
+    token++;
+    Nodo node = new Nodo("Proposicion",null,token);
+:}
     |   declara_simple:d
 {:
     token++;
@@ -162,85 +214,249 @@ proposition::= WLE expression FLECHA ABRIRC proposition CERRARC
     node.addHijo((Nodo)d);
     RESULT = node;
 :}
-    |   CicloFor
-    |   ifState
-    |   ID ASSIGNMENT expression PUNTOC
-    |   block_switch
-    |   print
-    |   catch;
-//impresiones
+    |   CicloFor:cf
+{:
+    token++;
+    Nodo node = new Nodo("Proposicion",null,token);
+    node.addHijo((Nodo)cf);
+:}
+    |   ifState:is
+{:
+    token++;
+    Nodo node = new Nodo("Proposicion",null,token);
+    node.addHijo((Nodo)is);
+:}
+    |   ID ASSIGNMENT expression:ex PUNTOC
+{:
+    token++;
+    Nodo node = new Nodo("Proposicion",null,token);
+
+    token++;
+    Nodo id = new Nodo("id",null,token);
+    node.addHijo(id);
+
+    token++;
+    Nodo assign = new Nodo("=",null,token);
+    node.addHijo(assign);
+
+    node.addHijo(ex);
+
+    token++;
+    Nodo punC = new Nodo(";",null,token);
+    node.addHijo(punC);
+
+    RESULT = node;
+:}
+    |   block_switch:bs
+{:
+    token++;
+    Nodo node = new Nodo("switch",null,token);
+    node.addHijo((Nodo)bs);
+:}
+    |   print:p
+{:
+    token++;
+    Nodo node = new Nodo("print",null,token);
+    node.addHijo((Nodo)p);
+:}
+    |   catch:c
+{:
+    token++;
+    Nodo node = new Nodo("catch",null,token);
+    node.addHijo((Nodo)c);
+:};
+//impresiones------------------------------------------------------------------
 print::= THROW PARENTESISA ID PARENTESISC PUNTOC
     |   THROW PARENTESISA valores PARENTESISC PUNTOC
     |   THROWDOWN PARENTESISA ID PARENTESISC PUNTOC
     |   THROWDOWN PARENTESISA valores PARENTESISC PUNTOC;
 
-//scanner     
+//scanner------------------------------------------------------------------     
 catch::= CATCH PARENTESISA ID COMMA ID PARENTESISC PUNTOC;
 
-//tipo
+//tipo------------------------------------------------------------------
 type::= VERDAD
 {:
+    // token++;
+    // Nodo type = new Nodo("type",null,token);
     token++;
     Nodo node = new Nodo("Verdad", null, token);
+    // type.addHijo(node);
     RESULT = node;
     
 :}
     | NUMERITO
 {:
+    // token++;
+    // Nodo type = new Nodo("type",null,token);
     token++;
     Nodo node = new Nodo("Numero", null, token);
+    // type.addHijo(node);
     RESULT = node;
 :}
     | LETRA
 {:
+    // token++;
+    // Nodo type = new Nodo("type",null,token);
     token++;
     Nodo node = new Nodo("Char", null, token);
+    // type.addHijo(node);
     RESULT = node;
 :}
     | WORD
 {:
+    // token++;
+    // Nodo type = new Nodo("type",null,token);
     token++;
     Nodo node = new Nodo("String", null, token);
+    // type.addHijo(node);
     RESULT = node;
 :};
 
-//declara puntoC
+//declara puntoC------------------------------------------------------------------
 declara_puntoc::= PUNTOC
 {:
     token++;
     Nodo node = new Nodo(";", null, token);
     RESULT = node;
 :}
-    |   asigna;
+    |   asigna: as
+{:
+    token++;
+    Nodo asigna = new Nodo("asigna",null,token);
+    asigna.addHijo((Nodo)as);
+    RESULT = asigna;
+:};
 
-//asignacion
-asigna::= ASSIGNMENT valores PUNTOC
+//asignacion------------------------------------------------------------------
+asigna::= ASSIGNMENT valores: valor PUNTOC
+{:
+    token++;
+    Nodo assign = new Nodo("Assigment",null,token);
+
+    token++;
+    Nodo val = new Nodo("valor",null,token);
+    val.addHijo((Nodo)valor)
+
+    token++;
+    Nodo node = new Nodo(";", null, token);
+    RESULT = node;
+:}
     |   ASSIGNMENT ID PUNTOC
-    |   vacio PUNTOC;
+{:
+    token++;
+    Nodo assign = new Nodo("ASSIGMENT",null,token);
+    token++;
+    Nodo id = new Nodo("ID",null,token);
+    token++;
+    Nodo node = new Nodo(";",null,token);
+    RESULT = node;
+:}
+    |   vacio PUNTOC
+{:
+    token++;
+    Nodo node = new Nodo(";",null,token);
+    RESULT = node;
+:};
 
-//array
-declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA NUM PARENTESISC BRACKETA type BRACKETC;
+//array------------------------------------------------------------------
+declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA NUM PARENTESISC BRACKETA type:tipo BRACKETC
+{:
+    token++;
+    Nodo declara = new Nodo("decalraA",null,token);
+    token++;
+    Nodo id = new Nodo("id",null,token);
+    declara.addHijo(id);
+    token++;
+    Nodo ass = new Nodo("assignment",null,token);
+    declara.addHijo(ass);
+    token++;
+    Nodo n = new Nodo("new",null,token);
+    declara.addHijo(n);
+    token++;
+    Nodo ar = new Nodo("array",null,token);
+    declara.addHijo(ar);
+    token++;
+    Nodo parA = new Nodo("(",null,token);
+    declara.addHijo(parA);
+    token++;
+    Nodo nu = new Nodo("num",null,token);
+    declara.addHijo(nu);
+    token++;
+    Nodo parC = new Nodo(")",null,token);
+    declara.addHijo(parC);
+    token++;
+    Nodo braA = new Nodo("[",null,token);
+    declara.addHijo(braA);
+    
+    declara.addHijo((Nodo)tipo);
 
-//valores
+    token++;
+    Nodo braC = new Nodo("]",null,token);
+    declara.addHijo(brac);
+:};
+
+//valores------------------------------------------------------------------
 valores::= NUM
+{:
+    token++;
+    Nodo num = new Nodo("num",null,token);
+    RESULT = num;
+:}
     |   BOOL
-    |   LETTER;
+{:
+    token++;
+    Nodo bool = new Nodo("Bool",null,token);
+    RESULT = bool;
+:}
+    |   LETTER
+{:
+    token++;
+    Nodo let = new Nodo("letter",null,token);
+    RESULT = let;
+:};
 
-//if
+//if------------------------------------------------------------------
 
-ifState::= IF PARENTESISA expression PARENTESISC ABRIRC proposition CERRARC eif;
+ifState::= IF PARENTESISA expression:ex PARENTESISC ABRIRC proposition:pro CERRARC eif: ei
+{:
+    token++;
+    Nodo sIf = new Nodo("if",null,token);
+    token++;
+    Nodo parA = new Nodo("(",null,token);
+    sIf.addHijo(parA);
+    
+    sIf.addHijo((Nodo)ex);
 
+    token++;
+    Nodo parC = new Nodo(")",null,token);
+    sIf.addHijo(parC);
+    token++;
+    Nodo abC = new Nodo("<",null,token);
+    sIf.addHijo(abC);
+    
+    sIf.addHijo((Nodo)pro);
+
+    token++;
+    Nodo cerC = new Nodo(">",null,token);
+    sIf.addHijo(verC);
+    
+    sIf.addHijo((Nodo)ei);
+    
+:};
+
+//Elseif--------------------------------------------------------------
 eif::= EIF expression ABRIRC proposition CERRARC eif
     |   ELSE ABRIRC proposition CERRARC
     |   {::};
 
-//bloque switch
+//bloque switch------------------------------------------------------------------
 block_switch::= BLOCK PARENTESISA ID PARENTESISC FLECHA cases END;
 
 cases::= CASE ID ABRIRC body CERRARC cases
     |   CASE valores ABRIRC body CERRARC cases
     |   DEFAULT ABRIRC body CERRARC ;
-//expresiones
+//expresiones------------------------------------------------------------------
 expression::= expression_simple
     |   expression_simple OPER expression;
 
