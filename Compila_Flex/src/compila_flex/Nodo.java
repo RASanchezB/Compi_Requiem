@@ -11,10 +11,10 @@ public class Nodo {
     public Nodo padre;
     public ArrayList<Nodo> hijos = new ArrayList<>();
     
-    nodo(String valor, Nodo padre, int ref){
+    Nodo(String valor, Nodo padre, int ref){
         this.valor = valor;
         this.padre = padre;
-        this.idNodo = ref
+        this.idNodo = ref;
     }
     //Getters y setters
     public void setValor(String valor){
@@ -43,21 +43,21 @@ public class Nodo {
         hijos.add(new Nodo(valor,null,ref));
     }
     public void addHijoAntes(Nodo hijo){
-        hijo.setPadre(this)
+        hijo.setPadre(this);
         this.hijos.add(0,hijo);
     }
     public void print(){
         String pad = "";
         if(this.padre != null){
-            pad += this.padre.id + "_";
+            pad += this.padre.idNodo + "_";
             pad += this.padre.getValor();
         }else{
             pad = "null";
             limpiar("");
             escribirArchivo("digraph {\n");
         }
-        String cadena = "\"" + pad + "\" -> \"" + this.id + "_" + this.val + "\";";
-        cadena += "\n"
+        String cadena = "\"" + pad + "\" -> \"" + this.idNodo + "_" + this.valor + "\";";
+        cadena += "\n";
         escribirArchivo(cadena);
         for(Nodo hijo: hijos){
             hijo.print();
@@ -66,7 +66,7 @@ public class Nodo {
 
     public void escribirArchivo(String v){
         FileWriter fichero = null;
-        PrinterWriter pw = null;
+        PrintWriter pw = null;
         try{
             fichero = new FileWriter("src/grafico.dot",true);
             pw = new PrintWriter(fichero);
@@ -88,7 +88,7 @@ public class Nodo {
         PrintWriter pw = null;
         try{
             fichero = new FileWriter("src/grafico.dot");
-            pw = new PrinterWriter(fichero);
+            pw = new PrintWriter(fichero);
             pw.print(v);
         }catch(Exception e){
 
