@@ -84,7 +84,7 @@ public class ejecuta {
     }
     public String print(Nodo padre ) {
         String cadena = "";
-        for (Nodo hijo : padre.getHijos()) {
+        for (Nodo hijo : padre.hijos) {
             if (hijo.valor != null) {
                 cadena += "\"" + padre.getID() + "," + padre.getValor() + "\" -> \"" + hijo.idNodo + "_" + hijo.valor + "\";";
                 cadena += "\n";
