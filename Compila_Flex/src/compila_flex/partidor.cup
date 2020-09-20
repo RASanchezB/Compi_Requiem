@@ -88,15 +88,15 @@ Program ::= START FLECHA BRACKETA body:b BRACKETC
     Nodo start = new Nodo("Start",null,token);
     token ++;
     Nodo flecha = new Nodo("flecha",null,token);
-    // token ++;
-    // Nodo Braca = new Nodo("Bracket izquierdo",null,token);
+    token ++;
+    Nodo Braca = new Nodo("Bracket izquierdo",null,token);
     token++;
     Nodo b = new Nodo("body",null,token);
     token ++;
     Nodo Bracc = new Nodo("Bracket derecho",null,token);
     start.addHijo(flecha);
     start.addHijo(Braca);
-    start.addHijo((Nodo)b)
+    start.addHijo((Nodo)b);
     start.addHijo(Bracc);
     parser.arbol = start;
     // RESULT = b;
@@ -116,7 +116,7 @@ declara_simple::= VAR type:t ID:id declara_puntoc:d
     decla.addHijo((Nodo)t);
     token++;
     Nodo i = new Nodo("ID",null,token);
-    decla.addHijo(i)
+    decla.addHijo(i);
     decla.addHijo((Nodo)d);
     token++;
     // Nodo node = new Nodo("Id",null,token);
@@ -149,7 +149,7 @@ funciones::= FUNC type:tipo ID PARENTESISA parametro:par PARENTESISC BRACKETA bo
     Nodo brackA = new Nodo("BracketA",null,token);
     f.addHijo(brackA);
     token++;
-    f.addHijo(bod);
+    f.addHijo((Nodo)bod);
     token++;
     Nodo rep = new Nodo("Reply",null,token); 
     f.addHijo(rep);
@@ -239,7 +239,7 @@ proposition::= WLE expression:ex FLECHA ABRIRC proposition CERRARC
     Nodo assign = new Nodo("=",null,token);
     node.addHijo(assign);
 
-    node.addHijo(ex);
+    node.addHijo((Nodo)ex);
 
     token++;
     Nodo punC = new Nodo(";",null,token);
@@ -336,7 +336,7 @@ asigna::= ASSIGNMENT valores: valor PUNTOC
 
     token++;
     Nodo val = new Nodo("valor",null,token);
-    val.addHijo((Nodo)valor)
+    val.addHijo((Nodo)valor);
 
     token++;
     Nodo node = new Nodo(";", null, token);
@@ -393,7 +393,7 @@ declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA NUM PARENTESISC BRACKET
 
     token++;
     Nodo braC = new Nodo("]",null,token);
-    declara.addHijo(brac);
+    declara.addHijo(braC);
 :};
 
 //valores------------------------------------------------------------------
@@ -438,7 +438,7 @@ ifState::= IF PARENTESISA expression:ex PARENTESISC ABRIRC proposition:pro CERRA
     sIf.addHijo((Nodo)pro);
 
     token++;
-    Nodo cerC = new Nodo(">",null,token);
+    Nodo verC = new Nodo(">",null,token);
     sIf.addHijo(verC);
     
     sIf.addHijo((Nodo)ei);
