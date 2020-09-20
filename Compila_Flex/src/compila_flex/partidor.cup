@@ -211,7 +211,11 @@ body::= proposition:p body:b
     node.addHijo((Nodo)b);
     RESULT = node;
 :}
-    | {::};
+    | 
+{:
+    token++;
+    Nodo bod = new Nodo("Body",null,token);
+:};
 //parametro------------------------------------------------------------------
 parametro::= type ID
     | ID;
