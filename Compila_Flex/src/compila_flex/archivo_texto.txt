@@ -1,5 +1,3 @@
 start->[
-	var num nombre;
-	var letra x = l;
-
+	
 ]

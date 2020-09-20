@@ -86,17 +86,21 @@ Program ::= START FLECHA BRACKETA body:b BRACKETC
 {:
     token ++;
     Nodo start = new Nodo("Start",null,token);
-    token ++;
-    Nodo flecha = new Nodo("->",null,token);
-    token ++;
-    Nodo Braca = new Nodo("[",null,token);
 
     token ++;
-    Nodo Bracc = new Nodo("]",null,token);
+    Nodo flecha = new Nodo("->",null,token);
     start.addHijo(flecha);
+
+    token ++;
+    Nodo Braca = new Nodo("[",null,token);
     start.addHijo(Braca);
+
     start.addHijo((Nodo)b);
+    
+    token ++;
+    Nodo Bracc = new Nodo("]",null,token);
     start.addHijo(Bracc);
+    
     parser.arbol = start;
     // RESULT = b;
 :};
@@ -106,20 +110,23 @@ Program ::= START FLECHA BRACKETA body:b BRACKETC
 //Declaracion------------------------------------------------------------------
 declara_simple::= VAR type:t ID:id declara_puntoc:d
 {:
-    //no estoy seguro de como declarar id
     token++;
     Nodo decla = new Nodo("Declaracion",null,token);
+
     token++;
     Nodo var = new Nodo("VAR",null,token);
     decla.addHijo(var);
+
     decla.addHijo((Nodo)t);
+
     token++;
     Nodo i = new Nodo("ID",null,token);
+    i.addHijo(id.toString(),token);
     decla.addHijo(i);
+
     decla.addHijo((Nodo)d);
-    // Nodo node = new Nodo("Id",null,token);
-    // decla.addHijo(node);
-    // RESULT = node;
+    
+    RESULT = decla;
 
     
 :};
@@ -128,12 +135,18 @@ funciones::= FUNC type:tipo ID PARENTESISA parametro:par PARENTESISC BRACKETA bo
 {:
     token++;
     Nodo f = new Nodo("Funcion",null,token);
+
     token++;
-    Nodo t = new Nodo("tipo",null,token);
-    f.addHijo(t);
+    Nodo fun = new Nodo("FUNC",null,token);
+    f.addHijo(fun);
+
+    f.addHijo((Nodo)tipo);
+    
     token++;
     Nodo i = new Nodo("ID",null,token);
+    i.addHijo(id.toString(),token);
     f.addHijo(i);
+
     token++;
     Nodo parenA = new Nodo("(",null,token); 
     f.addHijo(parenA);
@@ -143,14 +156,17 @@ funciones::= FUNC type:tipo ID PARENTESISA parametro:par PARENTESISC BRACKETA bo
     token++;
     Nodo parenC = new Nodo(")",null,token);
     f.addHijo(parenC);
+
     token++;
     Nodo brackA = new Nodo("[",null,token);
     f.addHijo(brackA);
-    token++;
+
     f.addHijo((Nodo)bod);
+
     token++;
     Nodo rep = new Nodo("Reply",null,token); 
     f.addHijo(rep);
+
     token++;
     Nodo parenA2 = new Nodo("(",null,token); 
     f.addHijo(parenA2);
@@ -160,6 +176,7 @@ funciones::= FUNC type:tipo ID PARENTESISA parametro:par PARENTESISC BRACKETA bo
     token++;
     Nodo parenC2 = new Nodo(")",null,token);
     f.addHijo(parenC2);
+    
     token++;
     Nodo brackC = new Nodo("]",null,token);
     f.addHijo(brackC);

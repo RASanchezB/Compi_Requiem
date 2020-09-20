@@ -71,19 +71,18 @@ public class ejecuta {
             pw.print(v);
             pw.print("\n}");
         }catch(Exception e){
-
+            System.out.println(e);
         }finally{
             try{
                 if(null != fichero){
                     fichero.close();
                 }
             }catch(Exception e){
-
+                System.out.println(e);    
             }
         }
     }
     public String print(Nodo padre ) {
-        String pad = "";
         String cadena = "";
         for (Nodo hijo : padre.getHijos()) {
             if (hijo.valor != null) {
