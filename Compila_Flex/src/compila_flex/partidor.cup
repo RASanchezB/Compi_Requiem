@@ -483,7 +483,7 @@ valores::= NUM
     
     token++;
     Nodo let = new Nodo("letter",null,token);
-    node.addHijo(let);
+    val.addHijo(let);
     
     RESULT = val;
 :};
@@ -614,7 +614,7 @@ expression_simple::= termino:t
 :}
     |   signo:s termino:t
 {:
-    token++
+    token++;
     Nodo expression=new Nodo("ExpressionSimple",null,token);
     
     expression.addHijo((Nodo)s);
