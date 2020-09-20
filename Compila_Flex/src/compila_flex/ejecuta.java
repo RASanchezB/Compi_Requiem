@@ -89,6 +89,8 @@ public class ejecuta {
                 cadena += "\"" + padre.getID() + "," + padre.getValor() + "\" -> \"" + hijo.idNodo + "_" + hijo.valor + "\";";
                 cadena += "\n";
                 cadena += print(hijo);
+            }else{
+                cadena+=print(hijo);
             }
         }
         
