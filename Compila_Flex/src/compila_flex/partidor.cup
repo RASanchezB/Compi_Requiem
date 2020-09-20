@@ -131,7 +131,7 @@ declara_simple::= VAR type:t ID:id declara_puntoc:d
     
 :};
 //Funcion------------------------------------------------------------------
-funciones::= FUNC type:tipo ID PARENTESISA parametro:par PARENTESISC BRACKETA body:bod REPLY PARENTESISA parametro:para PARENTESISC BRACKETC
+funciones::= FUNC type:tipo ID:id PARENTESISA parametro:par PARENTESISC BRACKETA body:bod REPLY PARENTESISA parametro:para PARENTESISC BRACKETC
 {:
     token++;
     Nodo f = new Nodo("Funcion",null,token);
@@ -176,7 +176,7 @@ funciones::= FUNC type:tipo ID PARENTESISA parametro:par PARENTESISC BRACKETA bo
     token++;
     Nodo parenC2 = new Nodo(")",null,token);
     f.addHijo(parenC2);
-    
+
     token++;
     Nodo brackC = new Nodo("]",null,token);
     f.addHijo(brackC);
