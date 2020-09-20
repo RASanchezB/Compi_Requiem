@@ -357,9 +357,9 @@ asigna::= ASSIGNMENT valores:valor PUNTOC
 
     token++;
     Nodo assign = new Nodo("Assigment",null,token);
-    node.addHijo(assign)
+    node.addHijo(assign);
 
-    val.addHijo((Nodo)valor);
+    node.addHijo((Nodo)valor);
 
     token++;
     Nodo pun = new Nodo(";", null, token);
@@ -401,7 +401,7 @@ asigna::= ASSIGNMENT valores:valor PUNTOC
 declara_array::= VAR ID:ide ASSIGNMENT NEW ARRAY PARENTESISA NUM:num PARENTESISC BRACKETA type:tipo BRACKETC
 {:
     token++;
-    Nodo declara = new Nodo("decalraArray",null,token);
+    Nodo declara = new Nodo("declaraArray",null,token);
 
     token++;
     Nodo v = new Nodo("var",null,token);
@@ -410,7 +410,7 @@ declara_array::= VAR ID:ide ASSIGNMENT NEW ARRAY PARENTESISA NUM:num PARENTESISC
     token++;
     Nodo id = new Nodo("ID",null,token);
     token++;
-    id.addHijo(ide,token);
+    id.addHijo(ide.toString(),token);
     declara.addHijo(id);
     
     token++;
@@ -432,7 +432,7 @@ declara_array::= VAR ID:ide ASSIGNMENT NEW ARRAY PARENTESISA NUM:num PARENTESISC
     token++;
     Nodo nu = new Nodo("num",null,token);
     token++;
-    nu.addHijo(num,token);
+    nu.addHijo(num.toString(),token);
     declara.addHijo(nu);
 
 
@@ -483,7 +483,7 @@ valores::= NUM
     
     token++;
     Nodo let = new Nodo("letter",null,token);
-    node.addHijo(let)
+    node.addHijo(let);
     
     RESULT = val;
 :};
@@ -581,7 +581,7 @@ cases::= CASE ID ABRIRC body CERRARC cases
 //expresiones------------------------------------------------------------------
 expression::= expression_simple:exp
 {:
-    token++
+    token++;
     Nodo expression=new Nodo("Expression",null,token);
 
     expression.addHijo((Nodo)exp);
@@ -591,7 +591,7 @@ expression::= expression_simple:exp
     |   expression_simple:expS OPER:op expression:exp
     
 {:
-    token++
+    token++;
     Nodo expression=new Nodo("Expression",null,token);
 
     expression.addHijo((Nodo)expS);
@@ -605,7 +605,7 @@ expression::= expression_simple:exp
 
 expression_simple::= termino:t
 {:
-    token++
+    token++;
     Nodo expression=new Nodo("ExpressionSimple",null,token);
 
     expression.addHijo((Nodo)t);
@@ -625,14 +625,14 @@ expression_simple::= termino:t
 :}
     |   expression_simple:expS OPEA_SUM:op termino:t
 {:
-    token++
+    token++;
     Nodo expression=new Nodo("ExpressionSimple",null,0);
     
     expression.addHijo((Nodo)expS);
     
     token++;
     Nodo opea_sum= new Nodo("Operador suma/resta",null,token);
-    opea_sum.addHijo(op,token);
+    opea_sum.addHijo(op.toString(),token);
     expression.addHijo(opea_sum);
 
     expression.addHijo((Nodo)t);
@@ -658,7 +658,7 @@ termino::= factor:f
     
     token++;
     Nodo opea_mult= new Nodo("Operador Mult/Div",null,0);
-    opea_mult.addHijo(op,token);
+    opea_mult.addHijo(op.toString(),token);
     termino.addHijo(opea_mult);
 
     termino.addHijo((Nodo)f);
@@ -675,7 +675,7 @@ factor::= ID:ide
     
     token++;
     Nodo id= new Nodo("ID",null,token);
-    id.addHijo(ide,token);
+    id.addHijo(ide.toString(),token);
     factor.addHijo(id);
 
     RESULT=factor;
@@ -687,7 +687,7 @@ factor::= ID:ide
 
     token++;
     Nodo id= new Nodo("ID",null,token);
-    id.addHijo(ide,token);
+    id.addHijo(ide.toString(),token);
     factor.addHijo(id);
 
     token++;
@@ -735,7 +735,7 @@ factor::= ID:ide
 
     token++;
     Nodo not= new Nodo("Not",null,token);
-    not.addHijo(n,token);
+    not.addHijo(n.toString(),token);
     factor.addHijo(not);
 
     factor.addHijo((Nodo)f);
@@ -755,7 +755,7 @@ signo ::= OPEA_SUM:opea_sum
 
     token++;
     Nodo op= new Nodo("Operador Suma/Resta",null,token);
-    op.addHijo(opea_sum,token);
+    op.addHijo(opea_sum.toString(),token);
     signo.addHijo(op);
 
     RESULT=signo;
