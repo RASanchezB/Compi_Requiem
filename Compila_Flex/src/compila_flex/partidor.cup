@@ -90,8 +90,6 @@ Program ::= START FLECHA BRACKETA body:b BRACKETC
     Nodo flecha = new Nodo("flecha",null,token);
     token ++;
     Nodo Braca = new Nodo("Bracket izquierdo",null,token);
-    token++;
-    Nodo b = new Nodo("body",null,token);
     token ++;
     Nodo Bracc = new Nodo("Bracket derecho",null,token);
     start.addHijo(flecha);
