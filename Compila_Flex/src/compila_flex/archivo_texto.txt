@@ -1,10 +1,5 @@
 start->[
-	var num=0;
-	var x= l;
-	var arreglo =array(1) [0,1,2,3] ;
-	var cont=0;
-	if(cont >0 ~ contador <2 )<
-	>eif(cont=2)<
-	>e<
-	>
+	var num nombre;
+	var letra x = l;
+
 ]

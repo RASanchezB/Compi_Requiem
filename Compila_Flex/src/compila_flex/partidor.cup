@@ -338,22 +338,33 @@ type::= VERDAD
 declara_puntoc::= PUNTOC
 {:
     token++;
+    Nodo declara = new Nodo("declaraPuntoC",null,token);
+
+    token++;
     Nodo node = new Nodo(";", null, token);
-    RESULT = node;
+    declara.addHijo(node);
+
+    RESULT = declara;
 :}
     |   asigna: as
 {:
     token++;
+    Nodo declara = new Nodo("declaraPuntoC",null,token);
+
+    token++;
     Nodo asigna = new Nodo("asigna",null,token);
-    asigna.addHijo((Nodo)as);
-    RESULT = asigna;
+    declara.addHijo(asigna);
+
+    declara.addHijo((Nodo)as);
+
+    RESULT = declara;
 :};
 
 //asignacion------------------------------------------------------------------
 asigna::= ASSIGNMENT valores:valor PUNTOC
 {:
     token++;
-    Nodo node = new Nodo("assigan",null,token);
+    Nodo node = new Nodo("asigna",null,token);
 
     token++;
     Nodo assign = new Nodo("Assigment",null,token);
